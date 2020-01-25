@@ -144,6 +144,17 @@ echo -n "GitHub org [Laboratoria]: "
 read gh_org
 if [[ "${gh_org}" == "" ]]; then
   gh_org="Laboratoria"
+else
+  gh_org="${gh_org}"
+fi
+
+echo -n "Would you like to make it Private [Y/n]: "
+read private_repo
+if [[ "${private_repo}" == "n" || "${create_repo}" == "N" ]]; then
+  private_repo="false"
+else 
+  private_repo="true"
+  exit 0
 fi
 
 
@@ -156,7 +167,7 @@ else
       -u "${gh_user}:${gh_pass}" \
       -X POST \
       -H 'content-type: application/json' \
-      -d "{\"name\":\"${repo_name}\",\"private\":true}" \
+      -d "{\"name\":\"${repo_name}\",\"private\":${private_repo}}" \
       "https://api.github.com/orgs/${gh_org}/repos"
   )
 
